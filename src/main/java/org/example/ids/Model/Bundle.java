@@ -52,8 +52,9 @@ public class Bundle {
     private Set<BundleItem> items = new HashSet<>();
 
     public Bundle() { }
-    public Bundle(Long id, String nome, BigDecimal prezzo, Distributore distributore) {
+    public Bundle(Long id, String nome, BigDecimal prezzo, Distributore distributore,int quantitaDisponibile) {
         this.id = id; this.nome = nome; this.prezzo = prezzo; this.distributore = distributore;
+        this.quantitaDisponibile = quantitaDisponibile;
     }
 
     public Long getId() { return id; }

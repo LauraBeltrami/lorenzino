@@ -36,7 +36,7 @@ public class ProdottoService {
         this.certificazioneRepo = certificazioneRepo;
     }
 
-    public ProdottoDTO creaProdotto(Long venditoreId, String nome, BigDecimal prezzo) {
+    public ProdottoDTO creaProdotto(Long venditoreId, String nome, BigDecimal prezzo,int quantita) {
         Venditore v = venditoreRepo.findById(venditoreId)
                 .orElseThrow(() -> new NotFoundException("Venditore non trovato: " + venditoreId));
         Prodotto p = new Prodotto();
@@ -44,7 +44,9 @@ public class ProdottoService {
         p.setPrezzo(prezzo);
         p.setVenditore(v);
         p.setStato(StatoProdotto.IN_VALIDAZIONE);
+        p.setQuantitaDisponibile(quantita);
         p = prodottoRepo.save(p);
+
         return ProdottoMapper.toDTO(p);
     }
 

@@ -62,24 +62,24 @@ class CarrelloServiceTest {
         Distributore dist = distributoreRepo.save(new Distributore( "Distributore Carrello Test"));
 
         // 3. Creo i Prodotti
-        prodottoApprovato = new Prodotto(null, "Salame Approvato", new BigDecimal("10.00"));
+        prodottoApprovato = new Prodotto(null, "Salame Approvato", new BigDecimal("10.00"),50);
         prodottoApprovato.setVenditore(dist);
         prodottoApprovato.setStato(StatoProdotto.APPROVATO);
         prodottoApprovato = prodottoRepo.save(prodottoApprovato);
 
-        prodottoInValidazione = new Prodotto(null, "Formaggio In Validazione", new BigDecimal("8.00"));
+        prodottoInValidazione = new Prodotto(null, "Formaggio In Validazione", new BigDecimal("8.00"),50);
         prodottoInValidazione.setVenditore(dist);
         prodottoInValidazione.setStato(StatoProdotto.IN_VALIDAZIONE);
         prodottoInValidazione = prodottoRepo.save(prodottoInValidazione);
 
         // 4. Creo i Bundle
         // Un bundle valido (solo prodotti approvati)
-        bundleValido = new Bundle(null, "Bundle Valido", new BigDecimal("50.00"), dist);
+        bundleValido = new Bundle(null, "Bundle Valido", new BigDecimal("50.00"), dist,50);
         bundleValido = bundleRepo.save(bundleValido);
         bundleItemRepo.save(new BundleItem(null, bundleValido, prodottoApprovato, 1));
 
         // Un bundle non valido (contiene prodotti non approvati)
-        bundleConProdottiMisti = new Bundle(null, "Bundle Misto", new BigDecimal("60.00"), dist);
+        bundleConProdottiMisti = new Bundle(null, "Bundle Misto", new BigDecimal("60.00"), dist,50);
         bundleConProdottiMisti = bundleRepo.save(bundleConProdottiMisti);
         bundleItemRepo.save(new BundleItem(null, bundleConProdottiMisti, prodottoApprovato, 1));
         bundleItemRepo.save(new BundleItem(null, bundleConProdottiMisti, prodottoInValidazione, 1));

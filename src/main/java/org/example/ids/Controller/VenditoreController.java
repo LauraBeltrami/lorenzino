@@ -1,16 +1,13 @@
 package org.example.ids.Controller;
 
 
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import org.example.ids.DTO.InvitoDTO;
 import org.example.ids.DTO.ProdottoDTO;
 import org.example.ids.Model.StatoInvito;
 import org.example.ids.Service.InvitoHandler;
 import org.example.ids.Service.ProdottoService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -29,11 +26,11 @@ public class VenditoreController {
         this.eventoService = eventoService;
     }
 
-    public static record CreaProdottoReq(@NotBlank String nome, @NotNull @DecimalMin("0.00") BigDecimal prezzo) {}
+    public static record CreaProdottoReq(@NotBlank String nome, @NotNull @DecimalMin("0.00") BigDecimal prezzo, @Min(0) int quantita) {}
 
     @PostMapping
     public ProdottoDTO crea(@PathVariable Long venditoreId, @Valid @RequestBody CreaProdottoReq req) {
-        return prodottoService.creaProdotto(venditoreId, req.nome(), req.prezzo());
+        return prodottoService.creaProdotto(venditoreId, req.nome(), req.prezzo(), req.quantita());
     }
 
     public static record AggiornaPrezzoReq(@NotNull @DecimalMin("0.00") BigDecimal prezzo) {}

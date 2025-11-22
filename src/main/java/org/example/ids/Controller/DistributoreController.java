@@ -25,12 +25,12 @@ public class DistributoreController {
 
     // ----- bundle -----
     public static record CreaBundleReq(@NotBlank String nome,
-                                       @NotNull @DecimalMin("0.00") BigDecimal prezzo) {
+                                       @NotNull @DecimalMin("0.00") BigDecimal prezzo, @Min(0) int quantita) {
     }
 
     @PostMapping("/bundles")
     public BundleDTO creaBundle(@PathVariable Long distributoreId, @Valid @RequestBody CreaBundleReq req) {
-        return distributoreService.creaBundle(distributoreId, req.nome(), req.prezzo());
+        return distributoreService.creaBundle(distributoreId, req.nome(), req.prezzo(), req.quantita());
     }
 
     @GetMapping("/bundles")

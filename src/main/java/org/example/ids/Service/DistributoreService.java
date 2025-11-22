@@ -42,7 +42,7 @@ public class DistributoreService {
     // public ProdottoDTO creaProdottoSingolo(...)
 
     // ----- bundle -----
-    public BundleDTO creaBundle(Long distributoreId, String nome, BigDecimal prezzo) {
+    public BundleDTO creaBundle(Long distributoreId, String nome, BigDecimal prezzo,int quantita) {
         Distributore dist = distributoreRepo.findById(distributoreId)
                 .orElseThrow(() -> new NotFoundException("Distributore non trovato: " + distributoreId));
 
@@ -53,7 +53,7 @@ public class DistributoreService {
                     throw new BusinessException("Bundle già esistente con questo nome.");
                 });
 
-        Bundle b = new Bundle(null, nome, prezzo, dist);
+        Bundle b = new Bundle(null, nome, prezzo, dist, quantita);
         b = bundleRepo.save(b);
         // ricarico con fetch-join (se usi i metodi graph) per sicurezza
         b = bundleRepo.findGraphById(b.getId()).orElse(b);

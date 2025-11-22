@@ -51,8 +51,9 @@ public class Prodotto {
     private Certificazione certificazione;
 
     public Prodotto() {}
-    public Prodotto(Long id, String nome, BigDecimal prezzo) {
+    public Prodotto(Long id, String nome, BigDecimal prezzo, int quantitaDisponibile) {
         this.id = id; this.nome = nome; this.prezzo = prezzo;
+        this.quantitaDisponibile = quantitaDisponibile;
     }
 
     public Long getId() { return id; }
