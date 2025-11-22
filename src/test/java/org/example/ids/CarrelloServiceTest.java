@@ -59,7 +59,7 @@ class CarrelloServiceTest {
         testAcquirente = acquirenteRepo.save(new Acquirente(null, "Mario", "Rossi", "mario.rossi@test.com"));
 
         // 2. Creo un Distributore per i prodotti e i bundle
-        Distributore dist = distributoreRepo.save(new Distributore(null, "Distributore Carrello Test"));
+        Distributore dist = distributoreRepo.save(new Distributore( "Distributore Carrello Test"));
 
         // 3. Creo i Prodotti
         prodottoApprovato = new Prodotto(null, "Salame Approvato", new BigDecimal("10.00"));

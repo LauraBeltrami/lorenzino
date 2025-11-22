@@ -60,7 +60,7 @@ class DistributoreServiceTest {
         venditoreRepo.deleteAll();
 
         // 1. Creo un Distributore (che è anche un Venditore)
-        testDistributore = new Distributore(null, "Distributore Test");
+        testDistributore = new Distributore( "Distributore Test");
         testDistributore = distributoreRepo.save(testDistributore);
 
         // 2. Creo prodotti (che richiedono un Venditore)

@@ -15,7 +15,7 @@ public class Distributore extends Venditore {
     private Set<Bundle> bundles = new HashSet<>();
 
     public Distributore() { }
-    public Distributore(Long id, String nome) { super(nome); }
+    public Distributore(String nome) { super(nome); }
 
     public Set<Bundle> getBundles() { return bundles; }
     public void setBundles(Set<Bundle> bundles) { this.bundles = bundles; }

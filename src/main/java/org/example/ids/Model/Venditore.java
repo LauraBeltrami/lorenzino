@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "venditori", uniqueConstraints = @UniqueConstraint(columnNames = "nome"))
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_venditore", length = 20)
-public class Venditore {
+public class Venditore extends UtenteApprovabile {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,4 +37,5 @@ public class Venditore {
     public void setNome(String nome) { this.nome = nome; }
     public Set<Prodotto> getProdotti() { return prodotti; }
     public void setProdotti(Set<Prodotto> prodotti) { this.prodotti = prodotti; }
+
 }

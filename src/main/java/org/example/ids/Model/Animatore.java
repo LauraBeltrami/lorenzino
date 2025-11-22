@@ -3,13 +3,17 @@ package org.example.ids.Model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "animatori", uniqueConstraints = @UniqueConstraint(columnNames = "nome"))
-public class Animatore {
+@Getter
+@Setter
+public class Animatore extends UtenteApprovabile{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,19 +27,8 @@ public class Animatore {
     private Set<Evento> eventi = new HashSet<>();
 
     public Animatore() {}
-    public Animatore(Long id, String nome) { this.id = id; this.nome = nome; }
+    public Animatore(String nome) { this.nome = nome; }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public Set<Evento> getEventi() {
-        return eventi;
-    }
-
-    public Long getId() {
-        return id;
-    }
 // getter/setter...
 }
 

@@ -54,7 +54,7 @@ class EventoServiceTest {
     @BeforeEach
     void setUp() {
         // 1. Creo attori comuni
-        testAnimatore = animatoreRepo.save(new Animatore(null, "Pro Loco Eventi"));
+        testAnimatore = animatoreRepo.save(new Animatore( "Pro Loco Eventi"));
         testVenditore = venditoreRepo.save(new Venditore( "Salumi Rossi"));
 
         // 2. Definisco date valide
@@ -141,7 +141,7 @@ class EventoServiceTest {
         // ARRANGE
         // testEvento è già stato creato nel setup per testAnimatore
         // Creo un altro animatore e un altro evento per essere sicuro che filtri
-        Animatore altroAnimatore = animatoreRepo.save(new Animatore(null, "Altro Animatore"));
+        Animatore altroAnimatore = animatoreRepo.save(new Animatore( "Altro Animatore"));
         eventoService.creaEvento(altroAnimatore.getId(), "Altro Evento", "...", "...", inizio, fine);
 
         // ACT
@@ -155,7 +155,7 @@ class EventoServiceTest {
     @Test
     void testListaEventiAnimatore_NessunEvento() {
         // ARRANGE
-        Animatore animatoreSenzaEventi = animatoreRepo.save(new Animatore(null, "Animatore Pigro"));
+        Animatore animatoreSenzaEventi = animatoreRepo.save(new Animatore( "Animatore Pigro"));
 
         // ACT
         List<EventoDTO> dtos = eventoService.listaEventiAnimatore(animatoreSenzaEventi.getId());

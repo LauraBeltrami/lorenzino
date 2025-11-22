@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "curatori")
-public class Curatore {
+public class Curatore extends UtenteApprovabile{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +21,7 @@ public class Curatore {
     private Set<Certificazione> certificazioni = new HashSet<>();
 
     public Curatore() {}
-    public Curatore(Long id, String nome) { this.id = id; this.nome = nome; }
+    public Curatore( String nome) { this.nome = nome; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

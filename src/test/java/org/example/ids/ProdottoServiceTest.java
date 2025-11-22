@@ -48,7 +48,7 @@ class ProdottoServiceTest {
     void setUp() {
         // Creiamo dati "puliti" per ogni test, così sono indipendenti
         testVenditore = venditoreRepo.save(new Venditore( "Venditore di Test"));
-        testCuratore = curatoreRepo.save(new Curatore(null, "Curatore di Test"));
+        testCuratore = curatoreRepo.save(new Curatore("Curatore di Test"));
 
         // Creiamo un prodotto base su cui lavorare
         Prodotto p = new Prodotto();
