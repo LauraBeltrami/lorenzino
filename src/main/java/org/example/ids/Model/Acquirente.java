@@ -16,10 +16,14 @@ public class Acquirente {
     @Column(nullable = false) private String cognome;
     @NotBlank @Email
     @Column(nullable = false, unique = true) private String email;
+    @Column(nullable = false)
+    @NotBlank(message = "Password cannot be blank")// Indica che la password non può essere null
+    private String password;
 
     public Acquirente() {}
-    public Acquirente(Long id, String nome, String cognome, String email) {
+    public Acquirente(Long id, String nome, String cognome, String email,String password) {
         this.id = id; this.nome = nome; this.cognome = cognome; this.email = email;
+        this.password = password;
     }
 
     public Long getId() { return id; }

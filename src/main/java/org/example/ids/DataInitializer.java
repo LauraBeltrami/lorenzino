@@ -3,6 +3,7 @@ package org.example.ids;
 import org.example.ids.Model.*;
 import org.example.ids.Repository.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +23,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ProdottoRepository prodottoRepo;
     private final BundleRepository bundleRepo;
     private final BundleItemRepository bundleItemRepo;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(AnimatoreRepository animatoreRepo,
                            VenditoreRepository venditoreRepo,
@@ -30,7 +32,8 @@ public class DataInitializer implements CommandLineRunner {
                            EventoRepository eventoRepo,
                            ProdottoRepository prodottoRepo,
                            BundleRepository bundleRepo,
-                           BundleItemRepository bundleItemRepo) {
+                           BundleItemRepository bundleItemRepo,
+                           PasswordEncoder passwordEncoder) {
         this.animatoreRepo = animatoreRepo;
         this.venditoreRepo = venditoreRepo;
         this.acquirenteRepo = acquirenteRepo;
@@ -39,6 +42,7 @@ public class DataInitializer implements CommandLineRunner {
         this.prodottoRepo = prodottoRepo;
         this.bundleRepo = bundleRepo;
         this.bundleItemRepo = bundleItemRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class DataInitializer implements CommandLineRunner {
         c1 = curatoreRepo.save(c1);
 
         // Acquirente
-        Acquirente acq1 = new Acquirente(null, "Luca", "Bianchi", "luca@mail.com");
+        Acquirente acq1 = new Acquirente(null, "Luca", "Bianchi", "luca@mail.com",passwordEncoder.encode("luca"));
         acq1 = acquirenteRepo.save(acq1);
 
         // --- 2. EVENTI ---
