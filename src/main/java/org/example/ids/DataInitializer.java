@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class DataInitializer implements CommandLineRunner {
 
     private final AnimatoreRepository animatoreRepo;
+    private final DistributoreRepository distributoreRepo;
     private final VenditoreRepository venditoreRepo;
     private final AcquirenteRepository acquirenteRepo;
     private final CuratoreRepository curatoreRepo;
@@ -25,7 +26,7 @@ public class DataInitializer implements CommandLineRunner {
     private final BundleItemRepository bundleItemRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(AnimatoreRepository animatoreRepo,
+    public DataInitializer(AnimatoreRepository animatoreRepo, DistributoreRepository distributoreRepo,
                            VenditoreRepository venditoreRepo,
                            AcquirenteRepository acquirenteRepo,
                            CuratoreRepository curatoreRepo,
@@ -35,6 +36,7 @@ public class DataInitializer implements CommandLineRunner {
                            BundleItemRepository bundleItemRepo,
                            PasswordEncoder passwordEncoder) {
         this.animatoreRepo = animatoreRepo;
+        this.distributoreRepo = distributoreRepo;
         this.venditoreRepo = venditoreRepo;
         this.acquirenteRepo = acquirenteRepo;
         this.curatoreRepo = curatoreRepo;
@@ -50,44 +52,54 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("🚀 INIZIO POPOLAMENTO DATI...");
 
-        // --- 1. UTENTI (ANIMATORI, VENDITORI, ECC) ---
+        // Nota: Password per tutti (tranne acquirente) è: "pass"
 
+        // --- 1. ANIMATORI ---
         // Animatore Approvato
-        Animatore a1 = new Animatore( "DJ Francesco");
+        Animatore a1 = new Animatore(null, "DJ Francesco", "dj@mail.com", passwordEncoder.encode("pass"));
         a1.setApprovato(true);
         a1 = animatoreRepo.save(a1);
 
         // Animatore NON Approvato
-        Animatore a2 = new Animatore("Animatore Sospeso");
+        Animatore a2 = new Animatore(null, "Animatore Sospeso", "sospeso@mail.com", passwordEncoder.encode("pass"));
         a2.setApprovato(false);
         a2 = animatoreRepo.save(a2);
 
+        // --- 2. VENDITORI E DISTRIBUTORI ---
         // Venditore Approvato
-        Venditore v1 = new Venditore( "Salumi Rossi");
+        Venditore v1 = new Venditore(null, "Salumi Rossi", "salumi@mail.com", passwordEncoder.encode("pass"));
         v1.setApprovato(true);
         v1 = venditoreRepo.save(v1);
 
         // Distributore Approvato
-        Distributore d1 = new Distributore( "Vini Langhe Distribuzione");
+        Distributore d1 = new Distributore(
+                null,
+                "Vini Langhe Distribuzione",
+                "vini@mail.com",
+                passwordEncoder.encode("pass")
+        );
         d1.setApprovato(true);
         d1 = venditoreRepo.save(d1);
 
+        // --- 3. CURATORI ---
         // Curatore Approvato
-        Curatore c1 = new Curatore( "Mario Artista");
+        Curatore c1 = new Curatore(null, "Mario Artista", "curatore@mail.com", passwordEncoder.encode("pass"));
         c1.setApprovato(true);
         c1 = curatoreRepo.save(c1);
 
-        // Acquirente
-        Acquirente acq1 = new Acquirente(null, "Luca", "Bianchi", "luca@mail.com",passwordEncoder.encode("luca"));
+
+
+        // --- 4. ACQUIRENTI ---
+        // Acquirente (password: luca)
+        Acquirente acq1 = new Acquirente(null, "Luca", "Bianchi", "luca@mail.com", passwordEncoder.encode("luca"));
         acq1 = acquirenteRepo.save(acq1);
 
-        // --- 2. EVENTI ---
+        // --- 5. EVENTI ---
         Evento e1 = new Evento(null, "Fiera del Tartufo", "Una grande festa", "Alba",
                 LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(7), a1);
         e1 = eventoRepo.save(e1);
 
-        // --- 3. PRODOTTI ---
-
+        // --- 6. PRODOTTI ---
         // Prodotto Venditore 1
         Prodotto p1 = new Prodotto(null, "Salame Cacciatorino", new BigDecimal("12.50"), 100);
         p1.setVenditore(v1);
@@ -106,7 +118,7 @@ public class DataInitializer implements CommandLineRunner {
         p3.setStato(StatoProdotto.APPROVATO);
         p3 = prodottoRepo.save(p3);
 
-        // --- 4. BUNDLE ---
+        // --- 7. BUNDLE ---
         Bundle b1 = new Bundle(null, "Cesto Aperitivo Piemonte", new BigDecimal("40.00"), d1, 10);
         b1 = bundleRepo.save(b1);
 
@@ -119,34 +131,28 @@ public class DataInitializer implements CommandLineRunner {
         //                     STAMPE PER IL TUO TEST
         // ================================================================
         System.out.println("\n==================================================");
-        System.out.println("🔍 RIEPILOGO ID PER POSTMAN (Copia questi ID)");
+        System.out.println("🔍 RIEPILOGO DATI PER POSTMAN (Login: Basic Auth)");
         System.out.println("==================================================");
 
         System.out.println("👤 ANIMATORI:");
-        System.out.println("   ID: " + a1.getId() + " | Nome: " + a1.getNome() + " (Approvato: " + a1.isApprovato() + ")");
-        System.out.println("   ID: " + a2.getId() + " | Nome: " + a2.getNome() + " (Approvato: " + a2.isApprovato() + ")");
+        System.out.println("   [ID: " + a1.getId() + "] User: dj@mail.com       | Pass: pass  (Approvato: " + a1.isApprovato() + ")");
+        System.out.println("   [ID: " + a2.getId() + "] User: sospeso@mail.com  | Pass: pass  (Approvato: " + a2.isApprovato() + ")");
 
         System.out.println("\n🏪 VENDITORI / DISTRIBUTORI:");
-        System.out.println("   ID: " + v1.getId() + " | Nome: " + v1.getNome() + " (Venditore Semplice)");
-        System.out.println("   ID: " + d1.getId() + " | Nome: " + d1.getNome() + " (Distributore)");
+        System.out.println("   [ID: " + v1.getId() + "] User: salumi@mail.com   | Pass: pass  (Venditore)");
+        System.out.println("   [ID: " + d1.getId() + "] User: vini@mail.com     | Pass: pass  (Distributore)");
 
         System.out.println("\n🎨 CURATORI:");
-        System.out.println("   ID: " + c1.getId() + " | Nome: " + c1.getNome());
+        System.out.println("   [ID: " + c1.getId() + "] User: curatore@mail.com | Pass: pass");
 
         System.out.println("\n🛒 ACQUIRENTI:");
-        System.out.println("   ID: " + acq1.getId() + " | Nome: " + acq1.getNome() + " " + acq1.getCognome() + " | Email: " + acq1.getEmail());
+        System.out.println("   [ID: " + acq1.getId() + "] User: luca@mail.com     | Pass: luca");
 
-        System.out.println("\n📅 EVENTI:");
-        System.out.println("   ID: " + e1.getId() + " | Titolo: " + e1.getTitolo() + " | Creato da Animatore ID: " + e1.getAnimatore().getId());
-
-        System.out.println("\n📦 PRODOTTI SINGOLI:");
-        System.out.println("   ID: " + p1.getId() + " | Nome: " + p1.getNome() + " | Prezzo: " + p1.getPrezzo() + " | Stock: " + p1.getQuantitaDisponibile());
-        System.out.println("   ID: " + p2.getId() + " | Nome: " + p2.getNome() + " | Prezzo: " + p2.getPrezzo() + " | Stock: " + p2.getQuantitaDisponibile());
-        System.out.println("   ID: " + p3.getId() + " | Nome: " + p3.getNome() + " | Prezzo: " + p3.getPrezzo() + " | Stock: " + p3.getQuantitaDisponibile());
-
-        System.out.println("\n🎁 BUNDLE:");
-        System.out.println("   ID: " + b1.getId() + " | Nome: " + b1.getNome() + " | Prezzo: " + b1.getPrezzo() + " | Stock Bundle: " + b1.getQuantitaDisponibile());
-
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("📦 OGGETTI DI PROVA:");
+        System.out.println("   Evento ID: " + e1.getId() + " (" + e1.getTitolo() + ")");
+        System.out.println("   Prodotto ID: " + p1.getId() + " (Salame) | Stock: " + p1.getQuantitaDisponibile());
+        System.out.println("   Bundle ID: " + b1.getId() + " (Cesto) | Stock: " + b1.getQuantitaDisponibile());
         System.out.println("==================================================\n");
     }
 }

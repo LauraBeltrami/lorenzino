@@ -17,7 +17,7 @@ public class AcquirenteCarrelloController {
     private final CarrelloService carrelloService;
     public AcquirenteCarrelloController(CarrelloService carrelloService) { this.carrelloService = carrelloService; }
 
-    @GetMapping public CarrelloDTO getDettaglio(@PathVariable Long acquirenteId) {
+    @GetMapping("/getCarrello") public CarrelloDTO getDettaglio(@PathVariable Long acquirenteId) {
         return carrelloService.getDettaglio(acquirenteId);
     }
 
@@ -27,16 +27,16 @@ public class AcquirenteCarrelloController {
 
     // prodotti
     public static record AddItemReq(@NotNull Long prodottoId, @Min(1) int quantita) {}
-    @PostMapping("/items")
+    @PostMapping("/itemAdd")
     public CarrelloDTO addItem(@PathVariable Long acquirenteId, @Valid @RequestBody AddItemReq req) {
         return carrelloService.addItem(acquirenteId, req.prodottoId(), req.quantita());
     }
     public static record UpdateQuantitaReq(@Min(0) int quantita) {}
-    @PatchMapping("/items/{prodottoId}") public CarrelloDTO updateQuantita(
+    @PatchMapping("/itemUpdate/{prodottoId}") public CarrelloDTO updateQuantita(
             @PathVariable Long acquirenteId, @PathVariable Long prodottoId, @Valid @RequestBody UpdateQuantitaReq req) {
         return carrelloService.updateQuantita(acquirenteId, prodottoId, req.quantita());
     }
-    @DeleteMapping("/items/{prodottoId}") public CarrelloDTO removeItem(
+    @DeleteMapping("/itemDelete/{prodottoId}") public CarrelloDTO removeItem(
             @PathVariable Long acquirenteId, @PathVariable Long prodottoId) {
         return carrelloService.removeItem(acquirenteId, prodottoId);
     }

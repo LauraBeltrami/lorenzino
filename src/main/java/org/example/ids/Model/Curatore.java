@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "curatori")
-public class Curatore extends UtenteApprovabile{
+public class Curatore extends AbstractUtente{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +21,15 @@ public class Curatore extends UtenteApprovabile{
     private Set<Certificazione> certificazioni = new HashSet<>();
 
     public Curatore() {}
-    public Curatore( String nome) { this.nome = nome; }
+    public Curatore(Long id, String nome, String email, String password) {
+        super();
+        this.id = id;
+        this.email = email;
+        this.nome = nome;
+        this.password = password;
+        this.ruolo = "ROLE_CURATORE";
+        this.approvato = false; // Serve approvazione
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

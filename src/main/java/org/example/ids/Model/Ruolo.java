@@ -6,7 +6,7 @@ public enum Ruolo {
     VENDITORE("Venditore"),
     CURATORE("Curatore"),
     ADMIN("Admin"),
-    GESTORE_PIATTAFORMA("Gestore Piattaforma");
+    GESTORE_PIATTAFORMA("GestorePiattaforma");
 
     private final String label;
 

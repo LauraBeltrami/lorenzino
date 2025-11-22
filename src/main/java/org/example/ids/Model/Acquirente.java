@@ -6,25 +6,23 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "acquirenti", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Acquirente {
+public class Acquirente extends AbstractUtente {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank @Column(nullable = false) private String nome;
-    @NotBlank
-    @Column(nullable = false) private String cognome;
-    @NotBlank @Email
-    @Column(nullable = false, unique = true) private String email;
-    @Column(nullable = false)
-    @NotBlank(message = "Password cannot be blank")// Indica che la password non può essere null
-    private String password;
+    private String nome;
+    private String cognome;
 
     public Acquirente() {}
-    public Acquirente(Long id, String nome, String cognome, String email,String password) {
-        this.id = id; this.nome = nome; this.cognome = cognome; this.email = email;
+    public Acquirente(Long id, String nome, String cognome, String email, String password) {
+        super();
+        this.id = id; this.nome = nome; this.cognome = cognome;
+        this.email = email;
         this.password = password;
+        this.ruolo = "ROLE_ACQUIRENTE"; // Ruolo fisso per questa classe
+        this.approvato = true; // L'acquirente non serve approvazione
     }
+    // .
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

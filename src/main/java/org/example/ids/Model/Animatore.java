@@ -13,7 +13,7 @@ import java.util.Set;
 @Table(name = "animatori", uniqueConstraints = @UniqueConstraint(columnNames = "nome"))
 @Getter
 @Setter
-public class Animatore extends UtenteApprovabile{
+public class Animatore extends AbstractUtente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,14 @@ public class Animatore extends UtenteApprovabile{
     private Set<Evento> eventi = new HashSet<>();
 
     public Animatore() {}
-    public Animatore(String nome) { this.nome = nome; }
+    public Animatore(Long id, String nome, String email, String password) {
+        super();
+        this.id = id; this.nome = nome;
+        this.email = email;
+        this.password = password;
+        this.ruolo = "ROLE_ANIMATORE";
+        this.approvato = false; // Serve approvazione
+    }
 
 // getter/setter...
 }

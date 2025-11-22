@@ -19,6 +19,12 @@ import org.springframework.http.HttpMethod;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -50,50 +56,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                // 3. Abilita Basic Auth
+                .userDetailsService(customUserDetailsService) // <-- DICIAMO DI USARE IL NOSTRO SERVICE
                 .httpBasic(Customizer.withDefaults())
-
-                // 4. Fix per H2 Console (Spring Security blocca i frame di default)
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService users() {
-        // Definiamo utenti finti per testare i ruoli
-
-        UserDetails animatore = User.builder()
-                .username("animatore")
-                .password(passwordEncoder().encode("pass")) // password: pass
-                .roles("ANIMATORE")
-                .build();
-
-        UserDetails venditore = User.builder()
-                .username("venditore")
-                .password(passwordEncoder().encode("pass"))
-                .roles("VENDITORE")
-                .build();
-
-        UserDetails acquirente = User.builder()
-                .username("acquirente")
-                .password(passwordEncoder().encode("pass"))
-                .roles("ACQUIRENTE")
-                .build();
-
-        UserDetails curatore = User.builder()
-                .username("curatore")
-                .password(passwordEncoder().encode("pass"))
-                .roles("CURATORE")
-                .build();
-
-        UserDetails admin = User.builder() // Un super utente che può fare tutto se configuri i ruoli
-                .username("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ANIMATORE", "VENDITORE", "ACQUIRENTE", "CURATORE")
-                .build();
-
-        return new InMemoryUserDetailsManager(animatore, venditore, acquirente, curatore, admin);
     }
 
     @Bean

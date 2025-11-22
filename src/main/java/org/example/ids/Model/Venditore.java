@@ -3,6 +3,7 @@ package org.example.ids.Model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +12,8 @@ import java.util.Set;
 @Table(name = "venditori", uniqueConstraints = @UniqueConstraint(columnNames = "nome"))
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_venditore", length = 20)
-public class Venditore extends UtenteApprovabile {
+@NoArgsConstructor
+public class Venditore extends AbstractUtente {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,8 +30,14 @@ public class Venditore extends UtenteApprovabile {
     @OneToMany(mappedBy = "venditore", fetch = FetchType.LAZY)
     private Set<Prodotto> prodotti = new HashSet<>();
 
-    public Venditore() { }
-    public Venditore(String nome) {this.nome = nome; }
+    public Venditore(Long id, String nome, String email, String password) {
+        super();
+        this.id = id; this.nome = nome;
+        this.email = email;
+        this.password = password;
+        this.ruolo = "ROLE_VENDITORE";
+        this.approvato = false; // Serve approvazione
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
